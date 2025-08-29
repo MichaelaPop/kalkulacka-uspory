@@ -124,30 +124,49 @@ button.secondary:hover{background:#dbe6ff}
     <section id="step1" class="step show">
       <div class="form-narrow">
         <h1>Zjistěte, kolik můžete ušetřit díky našemu řešení pro kontaktní centra.</h1>
-        <p class="sub">Vyplňte prosím, co nejvíce informací pro nejpřesnější výsledek.</p>
+        <p class="sub">Čím více údajů vyplníte, tím přesnější výpočet získáte.</p>
 
-        <div class="grid">
-          <div><label for="agents_total">Celkový počet agentů</label><input id="agents_total" name="agents_total" type="number" min="0"></div>
-          <div><label for="monthly_cost">Měsíční náklady na aktuální technologické řešení (Kč)</label><input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1"></div>
-          <div><label for="calls_in_month">Počet příchozích hovorů/měsíc</label><input id="calls_in_month" name="calls_in_month" type="number" min="0"></div>
-          <div><label for="avg_in_sec">Průměrná doba jednoho příchozího hovoru (s)</label><input id="avg_in_sec" name="avg_in_sec" type="number" min="0"></div>
-          <div><label for="calls_out_month">Počet odchozích hovorů/měsíc</label><input id="calls_out_month" name="calls_out_month" type="number" min="0"></div>
-          <div><label for="avg_out_sec">Průměrná doba jednoho odchozího hovoru (s)</label><input id="avg_out_sec" name="avg_out_sec" type="number" min="0"></div>
-          <div>
-            <label for="use_nonvoice">Využíváte i nehlasové kanály?</label>
-            <select id="use_nonvoice" name="use_nonvoice">
-              <option value="" selected disabled>Vyberte…</option>
-              <option value="NE">NE</option>
-              <option value="ANO">ANO</option>
-            </select>
-          </div>
-          <div id="nonvoice_wrap" class="hidden">
-            <label for="emails_month">Množství e-mailových interakcí/měsíc</label>
-            <input id="emails_month" name="emails_month" type="number" min="0">
-            <label for="chats_month" style="margin-top:8px">Množství chatovacích interakcí/měsíc</label>
-            <input id="chats_month" name="chats_month" type="number" min="0">
-          </div>
-        </div>
+<div class="grid">
+  <div>
+    <label for="agents_total">Kolik agentů má vaše kontaktní centrum?</label>
+    <input id="agents_total" name="agents_total" type="number" min="0">
+  </div>
+  <div>
+    <label for="monthly_cost">Jaké jsou vaše měsíční náklady na technologii? <em>(v Kč)</em></label>
+    <input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1">
+  </div>
+  <div>
+    <label for="calls_in_month">Kolik příchozích hovorů vyřídíte měsíčně?</label>
+    <input id="calls_in_month" name="calls_in_month" type="number" min="0">
+  </div>
+  <div>
+    <label for="avg_in_sec">Jak dlouho trvá průměrný příchozí hovor? <em>(v sekundách)</em></label>
+    <input id="avg_in_sec" name="avg_in_sec" type="number" min="0">
+  </div>
+  <div>
+    <label for="calls_out_month">Kolik odchozích hovorů uskutečníte měsíčně?</label>
+    <input id="calls_out_month" name="calls_out_month" type="number" min="0">
+  </div>
+  <div>
+    <label for="avg_out_sec">Jak dlouho trvá průměrný odchozí hovor? <em>(v sekundách)</em></label>
+    <input id="avg_out_sec" name="avg_out_sec" type="number" min="0">
+  </div>
+  <div>
+    <label for="use_nonvoice">Používáte i jiné než hlasové kanály? <em>(chat, e-mail, sociální sítě…)</em></label>
+    <select id="use_nonvoice" name="use_nonvoice">
+      <option value="" selected disabled>Vyberte…</option>
+      <option value="NE">NE</option>
+      <option value="ANO">ANO</option>
+    </select>
+  </div>
+  <div id="nonvoice_wrap" class="hidden">
+    <label for="emails_month">Kolik e-mailů odbavíte měsíčně?</label>
+    <input id="emails_month" name="emails_month" type="number" min="0">
+    <label for="chats_month" style="margin-top:8px">Kolik chatových zpráv měsíčně odbavíte?</label>
+    <input id="chats_month" name="chats_month" type="number" min="0">
+  </div>
+</div>
+
 
         <div class="row-actions">
           <button id="to_step2" type="button">Další</button>
