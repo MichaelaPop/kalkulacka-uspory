@@ -200,7 +200,10 @@ function show(stepEl, pct){
   progress.style.width = pct;
 }
 function v(id){ return (document.getElementById(id)?.value || '').trim(); }
-
+function scrollTopSmooth(){
+  try { window.scrollTo({top:0, behavior:'smooth'}); }
+  catch(e){ window.scrollTo(0,0); } // fallback
+}
 // Nehlasové kanály
 useNonvoice.addEventListener('change', () => {
   const showNV = useNonvoice.value === 'ANO';
@@ -256,11 +259,15 @@ submitBtn.addEventListener('click', async () => {
 
 try{
   await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, collectPayload());
-  if (TEMPLATE_ID_CONFIRM && email){ await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload()); }
+  if (TEMPLATE_ID_CONFIRM && email){ 
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload()); 
+  }
+  
   show(step3, '100%'); 
   finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
-  window.scrollTo({top:0, behavior:'smooth'}); // 🔥 posun nahoru
+  scrollTopSmooth(); // 🔝 posun iframe nahoru po odeslání
 }catch(err){
+
     console.error(err);
     note.textContent = 'Odeslání se nepodařilo. Zkuste to prosím znovu.'; note.className = 'note err';
   }finally{
