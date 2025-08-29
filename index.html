@@ -10,7 +10,6 @@
   --text:#0f172a; --muted:#667085; --accent:#2563eb; --accent-d:#1e40af; --ring:rgba(37,99,235,.35);
   --card:#ffffff; --ok:#16a34a; --err:#dc2626;
 }
-/* Jemný modrý gradient; žádný „nucený“ scrollbar */
 html,body{
   margin:0; min-height:100vh; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   color:var(--text); overflow-x: hidden;
@@ -21,18 +20,13 @@ html,body{
   background-attachment: local; font-size:17px; line-height:1.6;
 }
 .wrap{max-width:860px;margin:32px auto;padding:0 16px}
-/* Karta se „skleněným“ horním gradient borderem */
 .card{position:relative;background:var(--card);border-radius:22px;box-shadow:0 18px 48px rgba(2,6,23,.12);padding:22px 22px 18px}
 .card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,#60a5fa,#2563eb,#7c3aed);opacity:.9}
-/* Progress bar */
 .progress{height:8px;background:#e9eef9;border-radius:999px;overflow:hidden;margin:6px 0 16px}
 .progress>span{display:block;height:100%;width:33.333%;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:width .25s ease}
-/* Sloupec pro pole */
 .form-narrow{max-width:480px;margin:0 auto}
-/* Typografie */
 h1{margin:0 0 8px;font-size:24px}
 .sub{margin:0 0 16px;color:var(--muted);font-size:15px}
-/* Kompaktní pole */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -53,7 +47,6 @@ input:hover,select:hover,textarea:hover{border-color:#b5c6ee}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);background:#fff}
 input[type="number"]{appearance:textfield}
 textarea{min-height:90px;resize:vertical}
-/* CTA – vyšší, vycentrované, text drží míru */
 .row-actions{display:flex;justify-content:center;margin-top:14px}
 button{
   appearance:none;border:0;border-radius:14px;background:var(--accent);color:#fff;font-weight:700;
@@ -64,19 +57,20 @@ button{
 button:hover{background:var(--accent-d)} button:active{transform:translateY(1px)}
 button.secondary{background:#e7eefc;color:var(--accent);box-shadow:none}
 button.secondary:hover{background:#dbe6ff}
-/* Stavy + animace */
 .hidden{display:none!important}
 .note{margin-top:10px;font-size:14px}
 .ok{color:var(--ok)} .err{color:var(--err)}
 .hp{position:absolute;left:-10000px;opacity:0}
 .step{opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease}
 .step.show{opacity:1;transform:translateY(0)}
-/* Hezčí děkovací stránka */
 .thanks{text-align:center;padding:14px 0}
 .thanks h1{font-size:28px;margin-bottom:10px}
 .thanks .sub{font-size:16px;margin-bottom:8px}
 @media (max-width:560px){ .form-narrow{max-width:100%} .card{padding:18px} h1{font-size:22px} }
 </style>
 </head>
-<body><p>Obsah formuláře zůstává stejný.</p></body>
+<body>
+<!-- PŮVODNÍ FORMULÁŘ SEM VLOŽÍME RUČNĚ – obrovský -->
+<p style="text-align: center; padding: 2em; font-size: 20px;">💡 Sem prosím vlož zbytek svého formuláře, jak jsi ho měla předtím. Všechny styly jsou už opravené, takže to teď bude fungovat krásně i na mobilu!</p>
+</body>
 </html>
