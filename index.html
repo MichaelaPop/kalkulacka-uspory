@@ -7,112 +7,66 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --text:#0f172a;
-  --muted:#667085;
-  --accent:#2563eb;
-  --accent-d:#1e40af;
-  --ring:rgba(37,99,235,.35);
-  --card:#ffffff;
-  --ok:#16a34a;
-  --err:#dc2626;
+  --text:#0f172a; --muted:#667085; --accent:#2563eb; --accent-d:#1e40af; --ring:rgba(37,99,235,.35);
+  --card:#ffffff; --ok:#16a34a; --err:#dc2626;
 }
-
-/* Jemný modrý gradient pozadí; bez forced scrollbaru */
+/* Jemný modrý gradient; žádný „nucený“ scrollbar */
 html,body{
-  margin:0;
-  min-height:100vh;
-  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  margin:0; min-height:100vh; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   color:var(--text);
   background:
     radial-gradient(80% 120% at 0% 0%, #eaf2ff 0%, transparent 60%),
     radial-gradient(80% 120% at 100% 0%, #f0f6ff 0%, transparent 60%),
     linear-gradient(180deg,#f7faff 0%, #ffffff 60%);
-  background-attachment: local;
-  font-size:17px;
-  line-height:1.6;
+  background-attachment: local; font-size:17px; line-height:1.6;
 }
-
 .wrap{max-width:860px;margin:32px auto;padding:0 16px}
-
 /* Karta se „skleněným“ horním gradient borderem */
-.card{
-  position:relative;
-  background:var(--card);
-  border-radius:22px;
-  box-shadow:0 18px 48px rgba(2,6,23,.12);
-  padding:22px 22px 18px;
-}
-.card::before{
-  content:"";
-  position:absolute; inset:0 0 auto 0; height:3px; border-radius:22px 22px 0 0;
-  background:linear-gradient(90deg,#60a5fa, #2563eb, #7c3aed);
-  opacity:.9;
-}
-
+.card{position:relative;background:var(--card);border-radius:22px;box-shadow:0 18px 48px rgba(2,6,23,.12);padding:22px 22px 18px}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,#60a5fa,#2563eb,#7c3aed);opacity:.9}
 /* Progress bar */
-.progress{
-  height:8px; background:#e9eef9; border-radius:999px; overflow:hidden; margin:6px 0 16px;
-}
-.progress > span{
-  display:block; height:100%; width:33.333%; background:linear-gradient(90deg,#60a5fa,#2563eb);
-  transition:width .25s ease;
-}
-
-/* Sloupec pro pole (cca 50 % šířky karty) */
+.progress{height:8px;background:#e9eef9;border-radius:999px;overflow:hidden;margin:6px 0 16px}
+.progress>span{display:block;height:100%;width:33.333%;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:width .25s ease}
+/* Sloupec pro pole */
 .form-narrow{max-width:480px;margin:0 auto}
-
-/* Nadpisy a podnadpisy */
+/* Typografie */
 h1{margin:0 0 8px;font-size:24px}
 .sub{margin:0 0 16px;color:var(--muted);font-size:15px}
-
 /* Kompaktní pole */
 .grid{display:grid;gap:10px}
 label{display:block;margin:2px 0 4px;font-weight:600;font-size:14px}
 input,select,textarea{
-  width:100%;
-  font:inherit;
-  font-size:15px;
-  padding:8px 10px;            /* nižší výška */
-  border:1.6px solid #c9d5ee;  /* čistý, ale výraznější rámeček */
-  border-radius:12px;
-  background:#f9fbff;
+  width:100%; font:inherit; font-size:15px; padding:8px 10px;
+  border:1.6px solid #c9d5ee; border-radius:12px; background:#f9fbff;
   transition:border-color .15s,box-shadow .15s,background .15s,transform .05s;
 }
 input:hover,select:hover,textarea:hover{border-color:#b5c6ee}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);background:#fff}
 input[type="number"]{appearance:textfield}
 textarea{min-height:90px;resize:vertical}
-
 /* CTA – vyšší, vycentrované, text drží míru */
 .row-actions{display:flex;justify-content:center;margin-top:14px}
 button{
-  appearance:none;border:0;border-radius:14px;background:var(--accent);
-  color:#fff;font-weight:700;
-  padding:14px 18px;                 /* trochu vyšší */
-  cursor:pointer; transition:background .15s,transform .05s;
-  box-shadow:0 10px 22px rgba(37,99,235,.25);
-  width:auto; min-width:160px; max-width:260px;
-  font-size:clamp(15px,1.6vw,17px);  /* text se nepřežene */
+  appearance:none;border:0;border-radius:14px;background:var(--accent);color:#fff;font-weight:700;
+  padding:14px 18px; cursor:pointer; transition:background .15s,transform .05s;
+  box-shadow:0 10px 22px rgba(37,99,235,.25); width:auto; min-width:160px; max-width:240px;
+  font-size:clamp(15px,1.6vw,17px);
 }
-button:hover{background:var(--accent-d)}
-button:active{transform:translateY(1px)}
+button:hover{background:var(--accent-d)} button:active{transform:translateY(1px)}
 button.secondary{background:#e7eefc;color:var(--accent);box-shadow:none}
 button.secondary:hover{background:#dbe6ff}
-
+/* Stavy + animace */
 .hidden{display:none!important}
 .note{margin-top:10px;font-size:14px}
 .ok{color:var(--ok)} .err{color:var(--err)}
 .hp{position:absolute;left:-10000px;opacity:0}
-
-/* Animace přechodů mezi kroky */
-.step{opacity:0; transform:translateY(8px); transition:opacity .18s ease, transform .18s ease}
-.step.show{opacity:1; transform:translateY(0)}
-
-@media (max-width:560px){
-  .form-narrow{max-width:100%}
-  .card{padding:18px}
-  h1{font-size:22px}
-}
+.step{opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease}
+.step.show{opacity:1;transform:translateY(0)}
+/* Hezčí děkovací stránka */
+.thanks{text-align:center;padding:14px 0}
+.thanks h1{font-size:28px;margin-bottom:10px}
+.thanks .sub{font-size:16px;margin-bottom:8px}
+@media (max-width:560px){ .form-narrow{max-width:100%} .card{padding:18px} h1{font-size:22px} }
 </style>
 </head>
 <body>
@@ -126,47 +80,28 @@ button.secondary:hover{background:#dbe6ff}
         <h1>Zjistěte, kolik můžete ušetřit díky našemu řešení pro kontaktní centra.</h1>
         <p class="sub">Čím více údajů vyplníte, tím přesnější výpočet získáte.</p>
 
-<div class="grid">
-  <div>
-    <label for="agents_total">Kolik agentů má vaše kontaktní centrum?</label>
-    <input id="agents_total" name="agents_total" type="number" min="0">
-  </div>
-  <div>
-    <label for="monthly_cost">Jaké jsou vaše měsíční náklady na technologii? <em>(v Kč)</em></label>
-    <input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1">
-  </div>
-  <div>
-    <label for="calls_in_month">Kolik příchozích hovorů vyřídíte měsíčně?</label>
-    <input id="calls_in_month" name="calls_in_month" type="number" min="0">
-  </div>
-  <div>
-    <label for="avg_in_sec">Jak dlouho trvá průměrný příchozí hovor? <em>(v sekundách)</em></label>
-    <input id="avg_in_sec" name="avg_in_sec" type="number" min="0">
-  </div>
-  <div>
-    <label for="calls_out_month">Kolik odchozích hovorů uskutečníte měsíčně?</label>
-    <input id="calls_out_month" name="calls_out_month" type="number" min="0">
-  </div>
-  <div>
-    <label for="avg_out_sec">Jak dlouho trvá průměrný odchozí hovor? <em>(v sekundách)</em></label>
-    <input id="avg_out_sec" name="avg_out_sec" type="number" min="0">
-  </div>
-  <div>
-    <label for="use_nonvoice">Používáte i jiné než hlasové kanály? <em>(chat, e-mail, sociální sítě…)</em></label>
-    <select id="use_nonvoice" name="use_nonvoice">
-      <option value="" selected disabled>Vyberte…</option>
-      <option value="NE">NE</option>
-      <option value="ANO">ANO</option>
-    </select>
-  </div>
-  <div id="nonvoice_wrap" class="hidden">
-    <label for="emails_month">Kolik e-mailů odbavíte měsíčně?</label>
-    <input id="emails_month" name="emails_month" type="number" min="0">
-    <label for="chats_month" style="margin-top:8px">Kolik chatových zpráv měsíčně odbavíte?</label>
-    <input id="chats_month" name="chats_month" type="number" min="0">
-  </div>
-</div>
-
+        <div class="grid">
+          <div><label for="agents_total">Kolik agentů má vaše kontaktní centrum?</label><input id="agents_total" name="agents_total" type="number" min="0"></div>
+          <div><label for="monthly_cost">Jaké jsou vaše měsíční náklady na technologii? <em>(v Kč)</em></label><input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1"></div>
+          <div><label for="calls_in_month">Kolik příchozích hovorů vyřídíte měsíčně?</label><input id="calls_in_month" name="calls_in_month" type="number" min="0"></div>
+          <div><label for="avg_in_sec">Jak dlouho trvá průměrný příchozí hovor? <em>(v sekundách)</em></label><input id="avg_in_sec" name="avg_in_sec" type="number" min="0"></div>
+          <div><label for="calls_out_month">Kolik odchozích hovorů uskutečníte měsíčně?</label><input id="calls_out_month" name="calls_out_month" type="number" min="0"></div>
+          <div><label for="avg_out_sec">Jak dlouho trvá průměrný odchozí hovor? <em>(v sekundách)</em></label><input id="avg_out_sec" name="avg_out_sec" type="number" min="0"></div>
+          <div>
+            <label for="use_nonvoice">Používáte i jiné než hlasové kanály? <em>(chat, e-mail, sociální sítě…)</em></label>
+            <select id="use_nonvoice" name="use_nonvoice">
+              <option value="" selected disabled>Vyberte…</option>
+              <option value="NE">NE</option>
+              <option value="ANO">ANO</option>
+            </select>
+          </div>
+          <div id="nonvoice_wrap" class="hidden">
+            <label for="emails_month">Kolik e-mailů odbavíte měsíčně?</label>
+            <input id="emails_month" name="emails_month" type="number" min="0">
+            <label for="chats_month" style="margin-top:8px">Kolik chatových zpráv měsíčně odbavíte?</label>
+            <input id="chats_month" name="chats_month" type="number" min="0">
+          </div>
+        </div>
 
         <div class="row-actions">
           <button id="to_step2" type="button">Další</button>
@@ -181,7 +116,7 @@ button.secondary:hover{background:#dbe6ff}
         <div class="grid">
           <div><label for="full_name">Jméno a příjmení</label><input id="full_name" name="full_name"></div>
           <div><label for="company">Společnost</label><input id="company" name="company"></div>
-          <div><label for="phone">Telefon</label><input id="phone" name="phone" inputmode="tel"></div>
+          <div><label for="phone">Telefon</label><input id="phone" name="phone" inputmode="tel" placeholder="+420 123 456 789"></div>
           <div><label for="reply_to">E-mail</label><input id="reply_to" name="reply_to" type="email" placeholder="např. jana@firma.cz"></div>
         </div>
 
@@ -197,9 +132,9 @@ button.secondary:hover{background:#dbe6ff}
 
     <!-- KROK 3 -->
     <section id="step3" class="step hidden">
-      <div class="form-narrow">
-        <h1>Děkujeme za vyplnění údajů.</h1>
-        <p class="sub">Nevycházíme z obecných odhadů ani náhodných čísel. Každému klientovi se věnujeme individuálně a výsledky stavíme na reálných datech a zkušenostech z praxe.</p>
+      <div class="form-narrow thanks">
+        <h1>🎉 Děkujeme za vyplnění!</h1>
+        <p class="sub">Nevycházíme z obecných odhadů ani náhodných čísel. Každému klientovi se věnujeme individuálně a výsledky stavíme na reálných datech.</p>
         <p class="sub">Výpočet vašich možných úspor vám brzy zašleme.</p>
         <p class="note ok" id="final_msg"></p>
       </div>
@@ -250,6 +185,17 @@ useNonvoice.addEventListener('change', () => {
 toStep2Btn.addEventListener('click', () => { show(step2, '66.666%'); window.scrollTo({top:0,behavior:'smooth'}); });
 backTo1Btn?.addEventListener('click', () => { note.textContent=''; show(step1, '33.333%'); window.scrollTo({top:0,behavior:'smooth'}); });
 
+// Validace kontaktů – povinný e-mail + telefon
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // musí obsahovat „@“ a doménu
+}
+// Povolené formáty: 123456789 | 123 456 789 | +CCC123456789 | +CCC 123 456 789  (C=1–3 číslice)
+function isValidPhone(phone){
+  const p = phone.replace(/\s{2,}/g,' ').trim();
+  const re = /^(?:\d{3}\s?\d{3}\s?\d{3}|\+\d{1,3}\s?\d{3}\s?\d{3}\s?\d{3}|\+\d{1,3}\s?\d{9})$/;
+  return re.test(p);
+}
+
 // EmailJS payload
 function collectPayload(){
   return {
@@ -275,9 +221,30 @@ submitBtn.addEventListener('click', async () => {
   if (document.getElementById('website').value){ return; } // honeypot
 
   const email = v('reply_to');
-  if (email && !/^\S+@\S+\.\S+$/.test(email)){
-    note.textContent = 'Zadej prosím platný e-mail, nebo pole nech prázdné.';
+  const phone = v('phone');
+
+  if (!email){
+    note.textContent = 'Vyplň prosím e-mail.';
     note.className = 'note err';
+    document.getElementById('reply_to').focus();
+    return;
+  }
+  if (!isValidEmail(email)){
+    note.textContent = 'Zadej prosím platný e-mail (musí obsahovat „@“).';
+    note.className = 'note err';
+    document.getElementById('reply_to').focus();
+    return;
+  }
+  if (!phone){
+    note.textContent = 'Vyplň prosím telefon.';
+    note.className = 'note err';
+    document.getElementById('phone').focus();
+    return;
+  }
+  if (!isValidPhone(phone)){
+    note.textContent = 'Telefon zadej ve formátu 123456789, 123 456 789, +420123456789 nebo +420 123 456 789.';
+    note.className = 'note err';
+    document.getElementById('phone').focus();
     return;
   }
 
