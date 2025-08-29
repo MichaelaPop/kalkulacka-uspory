@@ -7,191 +7,215 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --bg:#f6f8fc;
-  --card:#fff;
   --text:#0f172a;
   --muted:#667085;
   --accent:#2563eb;
   --accent-d:#1e40af;
   --ring:rgba(37,99,235,.35);
+  --card:#ffffff;
   --ok:#16a34a;
   --err:#dc2626;
 }
 
-/* Layout */
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-.wrap{max-width:720px;margin:40px auto;padding:0 16px}
-.card{background:var(--card);border-radius:20px;box-shadow:0 14px 36px rgba(2,6,23,.08);padding:24px}
+/* Pozadí s jemným modrým gradientem */
+html,body{
+  margin:0;
+  height:100%;
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(80% 120% at 0% 0%, #eaf2ff 0%, transparent 60%),
+    radial-gradient(80% 120% at 100% 0%, #f0f6ff 0%, transparent 60%),
+    linear-gradient(180deg,#f7faff 0%, #ffffff 60%);
+  background-attachment: fixed;
+  font-size:17px; /* lehce větší text */
+  line-height:1.6;
+}
 
-/* Typo */
-h1{margin:0 0 8px;font-size:22px}
-.sub{margin:0 0 18px;color:var(--muted);font-size:14px}
+.wrap{max-width:860px;margin:36px auto;padding:0 16px}
+.card{
+  background:var(--card);
+  border-radius:22px;
+  box-shadow:0 18px 48px rgba(2,6,23,.12);
+  padding:22px;
+}
 
-/* Kompaktní formulář – ~poloviční výška */
-.grid{display:grid;gap:12px}
-label{display:block;margin:4px 0 6px;font-weight:600;font-size:13px}
+/* Zúžený sloupec pro pole (cca polovina šířky karty) */
+.form-narrow{max-width:480px;margin:0 auto}
+
+h1{margin:0 0 10px;font-size:24px}
+.sub{margin:0 0 18px;color:var(--muted);font-size:15px}
+
+.grid{display:grid;gap:10px}
+label{display:block;margin:2px 0 4px;font-weight:600;font-size:14px}
+
 input,select,textarea{
   width:100%;
   font:inherit;
-  font-size:14px;
-  padding:9px 11px;               /* menší výška */
-  border:1.5px solid #d0d8e6;     /* výraznější, ale čisté */
+  font-size:15px;
+  padding:8px 10px;             /* nižší pole */
+  border:1.6px solid #c9d5ee;   /* výraznější rámeček */
   border-radius:12px;
-  background:#f9fbff;             /* jemně modrobílé pole */
-  transition:border-color .15s,box-shadow .15s,background .15s;
+  background:#f9fbff;
+  transition:border-color .15s,box-shadow .15s,background .15s,transform .05s;
 }
-input:hover,select:hover,textarea:hover{border-color:#b7c4df}
+input:hover,select:hover,textarea:hover{border-color:#b5c6ee}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);background:#fff}
-textarea{min-height:90px;resize:vertical}
 input[type="number"]{appearance:textfield}
+textarea{min-height:90px;resize:vertical}
 
-/* Ovládací prvky */
-.row-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.row-actions{display:flex;justify-content:center;margin-top:12px}
 button{
-  appearance:none;border:0;border-radius:12px;background:var(--accent);
-  color:#fff;font-weight:700;padding:10px 14px;cursor:pointer;transition:background .15s
+  appearance:none;border:0;border-radius:14px;background:var(--accent);
+  color:#fff;font-weight:700;padding:12px 22px;cursor:pointer;transition:background .15s,transform .05s;
+  box-shadow:0 10px 22px rgba(37,99,235,.25);
+  min-width:220px;               /* větší tlačítko */
 }
 button:hover{background:var(--accent-d)}
-button.secondary{background:#e7eefc;color:var(--accent);font-weight:700}
+button:active{transform:translateY(1px)}
+button.secondary{background:#e7eefc;color:var(--accent);box-shadow:none}
 button.secondary:hover{background:#dbe6ff}
 
-/* Stavy a utility */
 .hidden{display:none!important}
-.note{margin-top:10px;font-size:13px}
+.note{margin-top:10px;font-size:14px}
 .ok{color:var(--ok)} .err{color:var(--err)}
 .hp{position:absolute;left:-10000px;opacity:0}
 
-/* Ať se krok vejde na jednu obrazovku na běžném notebooku */
+/* Vejde se na obrazovku notebooku bez scrollu po krocích */
 @media (min-height:780px){
-  .wrap{margin:32px auto}
+  .wrap{margin:28px auto}
   .card{padding:22px}
-  h1{font-size:21px}
 }
 
-/* Mobil – pohodlné mezery a plná šířka */
-@media (max-width:520px){
-  .wrap{padding:0 14px}
+/* Mobil: pole na plnou šířku, pohodlné okraje */
+@media (max-width:560px){
+  .form-narrow{max-width:100%}
   .card{padding:18px}
-  h1{font-size:20px}
+  h1{font-size:22px}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="card">
-
     <!-- KROK 1 -->
     <section id="step1">
-      <h1>Zjistěte, kolik můžete ušetřit díky našemu řešení pro kontaktní centra.</h1>
-      <p class="sub">Vyplňte prosím, co nejvíce informací pro nejpřesnější výsledek.</p>
+      <div class="form-narrow">
+        <h1>Zjistěte, kolik můžete ušetřit díky našemu řešení pro kontaktní centra.</h1>
+        <p class="sub">Vyplňte prosím, co nejvíce informací pro nejpřesnější výsledek.</p>
 
-      <div class="grid">
-        <div>
-          <label for="agents_total">Celkový počet agentů</label>
-          <input id="agents_total" name="agents_total" type="number" min="0" required>
+        <div class="grid">
+          <div>
+            <label for="agents_total">Celkový počet agentů</label>
+            <input id="agents_total" name="agents_total" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="monthly_cost">Měsíční náklady na aktuální technologické řešení (Kč)</label>
+            <input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1">
+          </div>
+
+          <div>
+            <label for="calls_in_month">Počet příchozích hovorů/měsíc</label>
+            <input id="calls_in_month" name="calls_in_month" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="avg_in_sec">Průměrná doba jednoho příchozího hovoru (s)</label>
+            <input id="avg_in_sec" name="avg_in_sec" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="calls_out_month">Počet odchozích hovorů/měsíc</label>
+            <input id="calls_out_month" name="calls_out_month" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="avg_out_sec">Průměrná doba jednoho odchozího hovoru (s)</label>
+            <input id="avg_out_sec" name="avg_out_sec" type="number" min="0">
+          </div>
+
+          <div>
+            <label for="use_nonvoice">Využíváte i nehlasové kanály?</label>
+            <select id="use_nonvoice" name="use_nonvoice">
+              <option value="" selected disabled>Vyberte…</option>
+              <option value="NE">NE</option>
+              <option value="ANO">ANO</option>
+            </select>
+          </div>
+
+          <div id="nonvoice_wrap" class="hidden">
+            <label for="emails_month">Množství e-mailových interakcí/měsíc</label>
+            <input id="emails_month" name="emails_month" type="number" min="0">
+            <label for="chats_month" style="margin-top:8px">Množství chatovacích interakcí/měsíc</label>
+            <input id="chats_month" name="chats_month" type="number" min="0">
+          </div>
         </div>
 
-        <div>
-          <label for="monthly_cost">Měsíční náklady na aktuální technologické řešení (Kč)</label>
-          <input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1" required>
+        <div class="row-actions">
+          <button id="to_step2" type="button">Další</button>
         </div>
-
-        <div>
-          <label for="calls_in_month">Počet příchozích hovorů/měsíc</label>
-          <input id="calls_in_month" name="calls_in_month" type="number" min="0" required>
-        </div>
-
-        <div>
-          <label for="avg_in_sec">Průměrná doba jednoho příchozího hovoru (s)</label>
-          <input id="avg_in_sec" name="avg_in_sec" type="number" min="0" required>
-        </div>
-
-        <div>
-          <label for="calls_out_month">Počet odchozích hovorů/měsíc</label>
-          <input id="calls_out_month" name="calls_out_month" type="number" min="0" required>
-        </div>
-
-        <div>
-          <label for="avg_out_sec">Průměrná doba jednoho odchozího hovoru (s)</label>
-          <input id="avg_out_sec" name="avg_out_sec" type="number" min="0" required>
-        </div>
-
-        <div>
-          <label for="use_nonvoice">Využíváte i nehlasové kanály?</label>
-          <select id="use_nonvoice" name="use_nonvoice" required>
-            <option value="" selected disabled>Vyberte…</option>
-            <option value="NE">NE</option>
-            <option value="ANO">ANO</option>
-          </select>
-        </div>
-
-        <div id="nonvoice_wrap" class="hidden">
-          <label for="emails_month">Množství e-mailových interakcí/měsíc</label>
-          <input id="emails_month" name="emails_month" type="number" min="0">
-          <label for="chats_month" style="margin-top:8px">Množství chatovacích interakcí/měsíc</label>
-          <input id="chats_month" name="chats_month" type="number" min="0">
-        </div>
-      </div>
-
-      <div class="row-actions">
-        <button id="to_step2" type="button">Další</button>
       </div>
     </section>
 
     <!-- KROK 2 -->
     <section id="step2" class="hidden">
-      <h1>Pro výsledek prosím vyplňte své údaje:</h1>
+      <div class="form-narrow">
+        <h1>Pro výsledek prosím vyplňte své údaje:</h1>
 
-      <div class="grid">
-        <div>
-          <label for="full_name">Jméno a příjmení</label>
-          <input id="full_name" name="full_name" required>
+        <div class="grid">
+          <div>
+            <label for="full_name">Jméno a příjmení</label>
+            <input id="full_name" name="full_name">
+          </div>
+          <div>
+            <label for="company">Společnost</label>
+            <input id="company" name="company">
+          </div>
+          <div>
+            <label for="phone">Telefon</label>
+            <input id="phone" name="phone" inputmode="tel">
+          </div>
+          <div>
+            <label for="reply_to">E-mail</label>
+            <input id="reply_to" name="reply_to" type="email" placeholder="např. jana@firma.cz">
+          </div>
         </div>
-        <div>
-          <label for="company">Společnost</label>
-          <input id="company" name="company">
+
+        <input class="hp" type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
+
+        <div class="row-actions">
+          <button id="back_to_1" class="secondary" type="button">Zpět</button>
+          <button id="submit_btn" type="button">Spočítat</button>
         </div>
-        <div>
-          <label for="phone">Telefon</label>
-          <input id="phone" name="phone" inputmode="tel">
-        </div>
-        <div>
-          <label for="reply_to">E-mail</label>
-          <input id="reply_to" name="reply_to" type="email" required>
-        </div>
+        <p id="note" class="note"></p>
       </div>
-
-      <input class="hp" type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
-
-      <div class="row-actions">
-        <button id="back_to_1" class="secondary" type="button">Zpět</button>
-        <button id="submit_btn" type="button">Spočítat</button>
-      </div>
-      <p id="note" class="note"></p>
     </section>
 
     <!-- KROK 3 -->
     <section id="step3" class="hidden">
-      <h1>Děkujeme za vyplnění údajů.</h1>
-      <p class="sub">Nevycházíme z obecných odhadů ani náhodných čísel. Každému klientovi se věnujeme individuálně a výsledky stavíme na reálných datech a zkušenostech z praxe.</p>
-      <p class="sub">Výpočet vašich možných úspor vám brzy zašleme.</p>
-      <p class="note ok" id="final_msg"></p>
+      <div class="form-narrow">
+        <h1>Děkujeme za vyplnění údajů.</h1>
+        <p class="sub">Nevycházíme z obecných odhadů ani náhodných čísel. Každému klientovi se věnujeme individuálně a výsledky stavíme na reálných datech a zkušenostech z praxe.</p>
+        <p class="sub">Výpočet vašich možných úspor vám brzy zašleme.</p>
+        <p class="note ok" id="final_msg"></p>
+      </div>
     </section>
-
   </div>
 </div>
 
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-// ===== VYPLŇTE SVÉ KLÍČE =====
+// ===== Tvoje EmailJS údaje (dle zadání) =====
 const PUBLIC_KEY   = "vt8iib1leI62JB7YV";
 const SERVICE_ID   = "service_hoq963k";
 const TEMPLATE_ID_INTERNAL = "template_dyuy5ss";
-const TEMPLATE_ID_CONFIRM  = null; // např. "template_confirm" pokud chceš posílat potvrzení zákazníkovi
+const TEMPLATE_ID_CONFIRM  = null; // můžeš doplnit např. "template_confirm"
+
 emailjs.init({ publicKey: PUBLIC_KEY });
 
-// ===== Pomocné odkazy na prvky
+// Prvky
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
 const step3 = document.getElementById('step3');
@@ -206,84 +230,78 @@ const nonvoiceWrap = document.getElementById('nonvoice_wrap');
 const note = document.getElementById('note');
 const finalMsg = document.getElementById('final_msg');
 
-// ===== Logika nehlasových kanálů
+// Toggle nehlasových kanálů
 useNonvoice.addEventListener('change', () => {
   const show = useNonvoice.value === 'ANO';
   nonvoiceWrap.classList.toggle('hidden', !show);
-  const e = document.getElementById('emails_month');
-  const c = document.getElementById('chats_month');
-  if (show) { e.required = true; c.required = true; }
-  else {
-    e.required = false; c.required = false;
-    e.value = ''; c.value = '';
+  if (!show){
+    document.getElementById('emails_month').value = '';
+    document.getElementById('chats_month').value  = '';
   }
 });
 
-// ===== Validace
-function v(id){ return document.getElementById(id).value.trim(); }
-function validateStep1(){
-  const req = ['agents_total','monthly_cost','calls_in_month','avg_in_sec','calls_out_month','avg_out_sec','use_nonvoice'];
-  for (const id of req){ if(!v(id)) { document.getElementById(id).focus(); return false; } }
-  if (useNonvoice.value === 'ANO'){
-    if(!v('emails_month')){ document.getElementById('emails_month').focus(); return false; }
-    if(!v('chats_month')) { document.getElementById('chats_month').focus();  return false; }
-  }
-  return true;
-}
-function validateStep2(){
-  if(!v('full_name')){ document.getElementById('full_name').focus(); return false; }
-  const email = v('reply_to');
-  if(!/^\S+@\S+\.\S+$/.test(email)){ document.getElementById('reply_to').focus(); return false; }
-  if (document.getElementById('website').value) return false; // honeypot
-  return true;
-}
+// Helpery
+function val(id){ return (document.getElementById(id)?.value || '').trim(); }
 
-// ===== Navigace mezi kroky
+// Krokování – bez povinných polí
 toStep2Btn.addEventListener('click', () => {
-  if(!validateStep1()){ return; }
-  step1.classList.add('hidden'); step2.classList.remove('hidden');
+  step1.classList.add('hidden');
+  step2.classList.remove('hidden');
   window.scrollTo({top:0,behavior:'smooth'});
 });
-backTo1Btn.addEventListener('click', () => {
-  step2.classList.add('hidden'); step1.classList.remove('hidden');
+
+backTo1Btn?.addEventListener('click', () => {
+  step2.classList.add('hidden');
+  step1.classList.remove('hidden');
   note.textContent = '';
   window.scrollTo({top:0,behavior:'smooth'});
 });
 
-// ===== Odeslání
+// Payload
 function collectPayload(){
   return {
-    agents_total: v('agents_total'),
-    calls_in_month: v('calls_in_month'),
-    calls_out_month: v('calls_out_month'),
-    avg_out_sec: v('avg_out_sec'),
-    avg_in_sec: v('avg_in_sec'),
-    monthly_cost: v('monthly_cost'),
-    use_nonvoice: v('use_nonvoice'),
-    emails_month: v('emails_month') || '0',
-    chats_month: v('chats_month') || '0',
-    full_name: v('full_name'),
-    company: v('company'),
-    phone: v('phone'),
-    reply_to: v('reply_to')
+    agents_total:     val('agents_total'),
+    calls_in_month:   val('calls_in_month'),
+    calls_out_month:  val('calls_out_month'),
+    avg_out_sec:      val('avg_out_sec'),
+    avg_in_sec:       val('avg_in_sec'),
+    monthly_cost:     val('monthly_cost'),
+    use_nonvoice:     val('use_nonvoice') || 'NEUVEDENO',
+    emails_month:     val('emails_month'),
+    chats_month:      val('chats_month'),
+    full_name:        val('full_name'),
+    company:          val('company'),
+    phone:            val('phone'),
+    reply_to:         val('reply_to')      // může zůstat prázdné; potvrzovací email pak neposíláme
   };
 }
 
+// Odeslání
 submitBtn.addEventListener('click', async () => {
   note.textContent = '';
-  if(!validateStep1() || !validateStep2()){
-    note.textContent = 'Zkontroluj prosím vyplněné údaje.';
+
+  // Anti-bot honeypot
+  if (document.getElementById('website').value){ return; }
+
+  // Lehká validace e-mailu (jen pokud je vyplněn)
+  const email = val('reply_to');
+  if (email && !/^\S+@\S+\.\S+$/.test(email)){
+    note.textContent = 'Zadej prosím platný e-mail, nebo pole nech prázdné.';
     note.className = 'note err';
     return;
   }
 
   submitBtn.disabled = true; submitBtn.textContent = 'Odesílám…';
+
+  const payload = collectPayload();
+
   try{
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, collectPayload());
-    if (TEMPLATE_ID_CONFIRM){
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload());
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, payload);
+    if (TEMPLATE_ID_CONFIRM && email){
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, payload);
     }
-    step2.classList.add('hidden'); step3.classList.remove('hidden');
+    step2.classList.add('hidden');
+    step3.classList.remove('hidden');
     finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
   }catch(err){
     console.error(err);
