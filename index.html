@@ -173,14 +173,14 @@ button.secondary:hover{background:#dbe6ff}
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-// ===== EmailJS =====
+// ===== EmailJS – tvoje údaje =====
 const PUBLIC_KEY   = "vt8iib1leI62JB7YV";
 const SERVICE_ID   = "service_hoq963k";
 const TEMPLATE_ID_INTERNAL = "template_dyuy5ss";
 const TEMPLATE_ID_CONFIRM  = null;
 emailjs.init({ publicKey: PUBLIC_KEY });
 
-// Prvky
+// ===== DOM prvky =====
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
 const step3 = document.getElementById('step3');
@@ -193,29 +193,54 @@ const note = document.getElementById('note');
 const finalMsg = document.getElementById('final_msg');
 const progress = document.getElementById('progress-bar');
 
-// Pomůcky
+// ===== Pomůcky =====
 function show(stepEl, pct){
   [step1, step2, step3].forEach(s => { s.classList.add('hidden'); s.classList.remove('show'); });
   stepEl.classList.remove('hidden'); requestAnimationFrame(()=> stepEl.classList.add('show'));
   progress.style.width = pct;
+  // vždy po změně kroku přeměříme výšku pro parent
+  postHeight();
 }
+
 function v(id){ return (document.getElementById(id)?.value || '').trim(); }
-function scrollTopSmooth(){
-  try { window.scrollTo({top:0, behavior:'smooth'}); }
-  catch(e){ window.scrollTo(0,0); } // fallback
+
+// posun nahoru + řekni rodiči, ať posune taky
+function scrollTopBoth(){
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(e){ window.scrollTo(0,0); }
+  try { window.parent.postMessage({ type: 'ALCASYS_CC_SCROLL_TOP' }, '*'); } catch(e){}
 }
-// Nehlasové kanály
+
+// pošli aktuální výšku iframu rodiči
+function postHeight(){
+  if (!window.parent || window.parent === window) return;
+  const h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+  try { window.parent.postMessage({ type: 'ALCASYS_CC_CALC_HEIGHT', height: h }, '*'); } catch(e){}
+}
+
+// ===== Nehlasové kanály =====
 useNonvoice.addEventListener('change', () => {
   const showNV = useNonvoice.value === 'ANO';
   nonvoiceWrap.classList.toggle('hidden', !showNV);
-  if (!showNV){ document.getElementById('emails_month').value=''; document.getElementById('chats_month').value=''; }
+  if (!showNV){
+    document.getElementById('emails_month').value='';
+    document.getElementById('chats_month').value='';
+  }
+  postHeight();
 });
 
-// Kroky
-toStep2Btn.addEventListener('click', () => { show(step2, '66.666%'); window.scrollTo({top:0,behavior:'smooth'}); });
-backTo1Btn?.addEventListener('click', () => { note.textContent=''; show(step1, '33.333%'); window.scrollTo({top:0,behavior:'smooth'}); });
+// ===== Kroky =====
+toStep2Btn.addEventListener('click', () => { 
+  show(step2, '66.666%'); 
+  scrollTopBoth(); 
+});
 
-// Validace
+backTo1Btn?.addEventListener('click', () => { 
+  note.textContent=''; 
+  show(step1, '33.333%'); 
+  scrollTopBoth(); 
+});
+
+// ===== Validace =====
 function isValidEmail(email){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
 function isValidPhone(phone){
   const p = phone.replace(/\s{2,}/g,' ').trim();
@@ -223,7 +248,7 @@ function isValidPhone(phone){
   return re.test(p);
 }
 
-// Payload
+// ===== Data pro EmailJS =====
 function collectPayload(){
   return {
     agents_total: v('agents_total'),
@@ -242,10 +267,10 @@ function collectPayload(){
   };
 }
 
-// Odeslání
+// ===== Odeslání =====
 submitBtn.addEventListener('click', async () => {
   note.textContent = '';
-  if (document.getElementById('website').value){ return; } // honeypot
+  if (document.getElementById('website')?.value){ return; } // honeypot
 
   const email = v('reply_to');
   const phone = v('phone');
@@ -257,39 +282,27 @@ submitBtn.addEventListener('click', async () => {
 
   submitBtn.disabled = true; submitBtn.textContent = 'Odesílám…';
 
-try{
-  await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, collectPayload());
-  if (TEMPLATE_ID_CONFIRM && email){ 
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload()); 
-  }
-  
-  show(step3, '100%'); 
-  finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
-  scrollTopSmooth(); // 🔝 posun iframe nahoru po odeslání
-}catch(err){
+  try{
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, collectPayload());
+    if (TEMPLATE_ID_CONFIRM && email){ await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload()); }
 
+    show(step3, '100%');
+    finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
+    scrollTopBoth(); // ⬆️ posuň iframe i parent stránku
+  }catch(err){
     console.error(err);
     note.textContent = 'Odeslání se nepodařilo. Zkuste to prosím znovu.'; note.className = 'note err';
   }finally{
     submitBtn.disabled = false; submitBtn.textContent = 'Spočítat';
+    postHeight(); // přeměř výšku i na chybě
   }
 });
 
-/* === Volitelně: Auto-resize výšky iframu (pošle výšku rodiči) ===
-   Na rodičovské stránce nasadíš posluchač (níže) a iframe se přizpůsobí. */
-(function autoResizeToParent(){
-  if (!window.parent || window.parent === window) return; // ne v iframu
-  const post = () => {
-    const h = Math.max(
-      document.documentElement.scrollHeight,
-      document.body.scrollHeight
-    );
-    window.parent.postMessage({ type:'ALCASYS_CC_CALC_HEIGHT', height:h }, '*');
-  };
-  new ResizeObserver(post).observe(document.documentElement);
-  window.addEventListener('load', post);
-  window.addEventListener('resize', post);
-})();
+// ===== Auto-resize iframu: přeměřuj výšku při načtení a změnách =====
+window.addEventListener('load', postHeight);
+window.addEventListener('resize', postHeight);
+new ResizeObserver(postHeight).observe(document.documentElement);
 </script>
+
 </body>
 </html>
