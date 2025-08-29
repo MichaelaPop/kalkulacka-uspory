@@ -254,11 +254,13 @@ submitBtn.addEventListener('click', async () => {
 
   submitBtn.disabled = true; submitBtn.textContent = 'Odesílám…';
 
-  try{
-    await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, collectPayload());
-    if (TEMPLATE_ID_CONFIRM && email){ await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload()); }
-    show(step3, '100%'); finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
-  }catch(err){
+try{
+  await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, collectPayload());
+  if (TEMPLATE_ID_CONFIRM && email){ await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, collectPayload()); }
+  show(step3, '100%'); 
+  finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
+  window.scrollTo({top:0, behavior:'smooth'}); // 🔥 posun nahoru
+}catch(err){
     console.error(err);
     note.textContent = 'Odeslání se nepodařilo. Zkuste to prosím znovu.'; note.className = 'note err';
   }finally{
