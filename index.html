@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kalkulačka úspór – Alcasys</title>
+<style>
+  /* Minimal – design doladíme potom */
+  :root { --bg:#f7f7f8; --card:#fff; --text:#111; --muted:#6b7280; --accent:#0ea5e9; --ok:#16a34a; --err:#dc2626; }
+  html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto}
+  .wrap{max-width:880px;margin:40px auto;padding:0 16px}
+  .card{background:var(--card);border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.06);padding:28px}
+  h1{margin:0 0 6px} .sub{color:var(--muted);margin:0 0 24px}
+  .grid{display:grid;gap:16px}
+  @media(min-width:720px){ .grid.two{grid-template-columns:1fr 1fr} }
+  label{display:block;margin:6px 0 6px;font-weight:600}
+  input,select,textarea{width:100%;padding:12px 14px;border:1px solid #e5e7eb;border-radius:12px;font:inherit;background:#fff}
+  input[type="number"]{appearance:textfield}
+  button{appearance:none;border:0;border-radius:12px;background:var(--accent);color:#fff;font-weight:700;padding:14px 18px;cursor:pointer}
+  .row-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:6px}
+  .hidden{display:none !important}
+  .note{margin-top:14px;font-size:.95rem}
+  .ok{color:var(--ok)} .err{color:var(--err)}
+  .hp{position:absolute;left:-10000px;opacity:0}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <!-- KROK 1 -->
+      <section id="step1">
+        <h1>Zjistěte, kolik můžete ušetřit díky našemu řešení pro kontaktní centra.</h1>
+        <p class="sub">Vyplňte prosím, co nejvíce infomací pro nejpřesnější výsledek.</p>
+
+        <div class="grid two">
+          <div>
+            <label for="agents_total">Celkový počet agentů</label>
+            <input id="agents_total" name="agents_total" type="number" min="0" required />
+          </div>
+
+          <div>
+            <label for="monthly_cost">Měsíční náklady na aktuální technologické řešení (Kč)</label>
+            <input id="monthly_cost" name="monthly_cost" type="number" min="0" step="1" required />
+          </div>
+
+          <div>
+            <label for="calls_in_month">Počet příchozích hovorů/měsíc</label>
+            <input id="calls_in_month" name="calls_in_month" type="number" min="0" required />
+          </div>
+
+          <div>
+            <label for="avg_in_sec">Průměrná doba jednoho příchozího hovoru (s)</label>
+            <input id="avg_in_sec" name="avg_in_sec" type="number" min="0" required />
+          </div>
+
+          <div>
+            <label for="calls_out_month">Počet odchozích hovorů/měsíc</label>
+            <input id="calls_out_month" name="calls_out_month" type="number" min="0" required />
+          </div>
+
+          <div>
+            <label for="avg_out_sec">Průměrná doba jednoho odchozího hovoru (s)</label>
+            <input id="avg_out_sec" name="avg_out_sec" type="number" min="0" required />
+          </div>
+
+          <div>
+            <label for="use_nonvoice">Využíváte i nehlasové kanály?</label>
+            <select id="use_nonvoice" name="use_nonvoice" required>
+              <option value="" selected disabled>Vyberte…</option>
+              <option value="NE">NE</option>
+              <option value="ANO">ANO</option>
+            </select>
+          </div>
+
+          <div id="nonvoice_wrap" class="hidden">
+            <label for="emails_month">Množství e-mailových interakcí/měsíc</label>
+            <input id="emails_month" name="emails_month" type="number" min="0" />
+            <label for="chats_month" style="margin-top:12px">Množství chatovacích interakcí/měsíc</label>
+            <input id="chats_month" name="chats_month" type="number" min="0" />
+          </div>
+        </div>
+
+        <div class="row-actions">
+          <button id="to_step2">Další</button>
+        </div>
+      </section>
+
+      <!-- KROK 2 -->
+      <section id="step2" class="hidden">
+        <h1>Pro výsledek prosím vyplňte své údaje:</h1>
+
+        <div class="grid two">
+          <div>
+            <label for="full_name">Jméno a příjmení</label>
+            <input id="full_name" name="full_name" required />
+          </div>
+          <div>
+            <label for="company">Společnost</label>
+            <input id="company" name="company" />
+          </div>
+          <div>
+            <label for="phone">Telefon</label>
+            <input id="phone" name="phone" inputmode="tel" />
+          </div>
+          <div>
+            <label for="reply_to">E-mail</label>
+            <input id="reply_to" name="reply_to" type="email" required />
+          </div>
+        </div>
+
+        <!-- honeypot proti botům -->
+        <input class="hp" type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
+
+        <div class="row-actions">
+          <button id="back_to_1" type="button">Zpět</button>
+          <button id="submit_btn" type="button">Spočítat</button>
+        </div>
+        <p id="note" class="note"></p>
+      </section>
+
+      <!-- KROK 3 -->
+      <section id="step3" class="hidden">
+        <h1>Děkujeme za vyplnění údajů.</h1>
+        <p class="sub">
+          Nevycházíme z obecných odhadů ani náhodných čísel. Každému klientovi se věnujeme individuálně
+          a výsledky stavíme na reálných datech a zkušenostech z praxe.
+        </p>
+        <p class="sub">Výpočet vašich možných úsp orách vám brzy zašleme.</p>
+        <p class="note ok" id="final_msg"></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // ======= VYPLňTE ÚDAJE Z EMAILJS =======
+    const PUBLIC_KEY           = "TVŪJ_PUBLIC_KEY";
+    const SERVICE_ID           = "TVŪJ_SERVICE_ID";
+    const TEMPLATE_ID_INTERNAL = "TVŪJ_TEMPLATE_ID_INTERNAL"; // šablona pro michaela.popelkova@alcasys.eu
+    const TEMPLATE_ID_CONFIRM  = null; // např. "TVŪJ_TEMPLATE_ID_CONFIRM" pokud chceš posílat potvrzení zákazníkovi
+    emailjs.init({ publicKey: PUBLIC_KEY });
+
+    // ======= ELEMENTY =======
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    const useNonvoice = document.getElementById('use_nonvoice');
+    const nonvoiceWrap = document.getElementById('nonvoice_wrap');
+
+    const btnToStep2 = document.getElementById('to_step2');
+    const btnBackTo1 = document.getElementById('back_to_1');
+    const btnSubmit  = document.getElementById('submit_btn');
+
+    const note = document.getElementById('note');
+    const finalMsg = document.getElementById('final_msg');
+
+    // ======= LOGIKA ZOBRAZENÍ NEHlasových KANÁLŮ =======
+    useNonvoice.addEventListener('change', () => {
+      if (useNonvoice.value === 'ANO') {
+        nonvoiceWrap.classList.remove('hidden');
+        document.getElementById('emails_month').toggleAttribute('required', true);
+        document.getElementById('chats_month').toggleAttribute('required', true);
+      } else {
+        nonvoiceWrap.classList.add('hidden');
+        document.getElementById('emails_month').value = '';
+        document.getElementById('chats_month').value  = '';
+        document.getElementById('emails_month').removeAttribute('required');
+        document.getElementById('chats_month').removeAttribute('required');
+      }
+    });
+
+    // ======= KROKOVÁ NAVIGACE =======
+    btnToStep2.addEventListener('click', () => {
+      if (!validateStep1()) return;
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    btnBackTo1.addEventListener('click', () => {
+      step2.classList.add('hidden');
+      step1.classList.remove('hidden');
+      note.textContent = '';
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    // ======= VALIDACE =======
+    function validateStep1(){
+      const requiredIds = ['agents_total','monthly_cost','calls_in_month','avg_in_sec','calls_out_month','avg_out_sec','use_nonvoice'];
+      for (const id of requiredIds){
+        const el = document.getElementById(id);
+        if (!el.value) { el.focus(); return false; }
+      }
+      if (useNonvoice.value === 'ANO'){
+        const e = document.getElementById('emails_month');
+        const c = document.getElementById('chats_month');
+        if (!e.value || !c.value){ (e.value ? c : e).focus(); return false; }
+      }
+      return true;
+    }
+
+    function validateStep2(){
+      const requiredIds = ['full_name','reply_to'];
+      for (const id of requiredIds){
+        const el = document.getElementById(id);
+        if (!el.value){ el.focus(); return false; }
+      }
+      // jednoduchý e-mail check
+      const mail = document.getElementById('reply_to').value.trim();
+      if (!/^\S+@\S+\.\S+$/.test(mail)){ document.getElementById('reply_to').focus(); return false; }
+      // honeypot
+      if (document.getElementById('website').value) return false;
+      return true;
+    }
+
+    // ======= ODESLÁNÍ =======
+    btnSubmit.addEventListener('click', async () => {
+      note.textContent = '';
+      if (!validateStep1() || !validateStep2()){
+        note.textContent = 'Zkontroluj prosím vyplněné údaje.';
+        note.className = 'note err';
+        return;
+      }
+
+      btnSubmit.disabled = true; btnSubmit.textContent = 'Odesílám…';
+
+      const payload = collectPayload();
+
+      try {
+        // 1) Interní mail Michael e
+        await emailjs.send(SERVICE_ID, TEMPLATE_ID_INTERNAL, payload);
+        // 2) Volitelné potvrzení zákazníkovi
+        if (TEMPLATE_ID_CONFIRM){
+          await emailjs.send(SERVICE_ID, TEMPLATE_ID_CONFIRM, payload);
+        }
+
+        step2.classList.add('hidden');
+        step3.classList.remove('hidden');
+        finalMsg.textContent = 'Formulář byl úspěšně odeslán.';
+      } catch (err) {
+        note.textContent = 'Odeslání se nepodařilo. Zkuste to prosím znovu.';
+        note.className = 'note err';
+        console.error(err);
+        btnSubmit.disabled = false; btnSubmit.textContent = 'Spočítat';
+        return;
+      }
+    });
+
+    function collectPayload(){
+      const get = id => document.getElementById(id).value.trim();
+      return {
+        // Krok 1
+        agents_total:     get('agents_total'),
+        calls_in_month:   get('calls_in_month'),
+        calls_out_month:  get('calls_out_month'),
+        avg_out_sec:      get('avg_out_sec'),
+        avg_in_sec:       get('avg_in_sec'),
+        monthly_cost:     get('monthly_cost'),
+        use_nonvoice:     get('use_nonvoice'),
+        emails_month:     get('emails_month') || '0',
+        chats_month:      get('chats_month')  || '0',
+        // Krok 2
+        full_name:        get('full_name'),
+        company:          get('company'),
+        phone:            get('phone'),
+        reply_to:         get('reply_to')
+      };
+    }
+  </script>
+</body>
+</html>
