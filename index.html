@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --text:#0f172a; --muted:#667085; --accent:#2563eb; --accent-d:#1e40af; --ring:rgba(37,99,235,.35);
+  --text:#0f172a; --muted:#667085; --accent:#b92e27; --accent-d:#8e211c; --ring:rgba(185,46,39,.35);
   --card:#ffffff; --ok:#16a34a; --err:#dc2626;
 }
 
@@ -28,11 +28,11 @@ html,body{
 /* Obal a karta */
 .wrap{max-width:560px;margin:28px auto;padding:0 16px}
 .card{position:relative;background:var(--card);border-radius:22px;box-shadow:0 18px 48px rgba(2,6,23,.12);padding:22px 22px 18px;overflow:hidden}
-.card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,#60a5fa,#2563eb,#7c3aed);opacity:.9}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;border-radius:22px 22px 0 0;background:linear-gradient(90deg,#e28986,#b92e27,#8e211c);opacity:.9}
 
 /* Progress bar */
-.progress{height:8px;background:#e9eef9;border-radius:999px;overflow:hidden;margin:6px 0 16px}
-.progress>span{display:block;height:100%;width:33.333%;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:width .25s ease}
+.progress{height:8px;background:#f4e2e2;border-radius:999px;overflow:hidden;margin:6px 0 16px}
+.progress>span{display:block;height:100%;width:33.333%;background:linear-gradient(90deg,#e28986,#b92e27);transition:width .25s ease}
 
 /* Sloupec pro pole */
 .form-narrow{max-width:480px;margin:0 auto;width:100%}
@@ -55,11 +55,11 @@ input,select,textarea{
   width:100%; max-width:100%; min-width:0; display:block;
   font:inherit; font-size:16px; /* iOS anti-zoom */
   padding:10px 12px;
-  border:1.6px solid #c9d5ee; border-radius:12px; background:#f9fbff;
+  border:1.6px solid #d8d8d8; border-radius:12px; background:#fdfafa;
   transition:border-color .15s,box-shadow .15s,background .15s,transform .05s;
   -webkit-appearance:none; appearance:none;
 }
-input:hover,select:hover,textarea:hover{border-color:#b5c6ee}
+input:hover,select:hover,textarea:hover{border-color:#bdbdbd}
 input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);background:#fff}
 input[type="number"]{appearance:textfield}
 textarea{min-height:90px;resize:vertical}
@@ -69,12 +69,12 @@ textarea{min-height:90px;resize:vertical}
 button{
   appearance:none;border:0;border-radius:14px;background:var(--accent);color:#fff;font-weight:700;
   padding:14px 18px; cursor:pointer; transition:background .15s,transform .05s;
-  box-shadow:0 10px 22px rgba(37,99,235,.25); width:auto; min-width:160px; max-width:240px;
+  box-shadow:0 10px 22px rgba(185,46,39,.25); width:auto; min-width:160px; max-width:240px;
   font-size:clamp(15px,1.6vw,17px);
 }
 button:hover{background:var(--accent-d)} button:active{transform:translateY(1px)}
-button.secondary{background:#e7eefc;color:var(--accent);box-shadow:none}
-button.secondary:hover{background:#dbe6ff}
+button.secondary{background:#f6e6e6;color:var(--accent);box-shadow:none}
+button.secondary:hover{background:#eadddd}
 
 /* Stavy + animace + thanks */
 .hidden{display:none!important}
