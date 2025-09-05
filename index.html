@@ -17,9 +17,12 @@ html,body{
   color:var(--text); line-height:1.6; font-size:17px; overflow-x:hidden;
   -webkit-text-size-adjust:100%;
   background:
-  radial-gradient(80% 120% at 0% 0%, #fbe9e9, transparent),
-  radial-gradient(80% 120% at 100% 100%, #fdeeee, transparent),
-  linear-gradient(180deg, #fdf7f7 0%, #ffffff 49.05%, #f5ecec 100%);
+    /* vlevo nahoře – tmavší červená s průhledností do ztracena */
+    radial-gradient(80% 120% at 0% 0%, rgba(185,46,39,0.3) 0%, rgba(185,46,39,0) 80%),
+    /* vpravo dole – jemnější červená s průhledností */
+    radial-gradient(80% 120% at 100% 100%, rgba(226,137,134,0.2) 0%, rgba(226,137,134,0) 80%),
+    /* odshora dolů – přechod od bílé přes růžovou k bílé */
+    linear-gradient(180deg, #ffffff 0%, #fbe9e9 50%, #fdeeee 100%);
   background-attachment: local;
 }
 /* Ať se šířky počítají včetně padding/border */
